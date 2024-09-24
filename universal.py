@@ -1,6 +1,5 @@
 import pandas as pd
 import tkinter as tk
-import streamlit as st
 from tkinter import filedialog
 import shutil
 import re
