@@ -1,6 +1,5 @@
 import pandas as pd
-import tkinter as tk
-from tkinter import filedialog
+import streamlit as st
 import shutil
 import re
 from openpyxl import load_workbook
@@ -10,25 +9,19 @@ from concurrent.futures import ThreadPoolExecutor
 import time
 import os
 
+
 def process_excel_file():
     start_time = time.time()  # Start timing
 
-    # Открытие диалогового окна для выбора исходного файла
-    root = tk.Tk()
-    root.withdraw()
-    input_file_path = filedialog.askopenfilename(title="Выберите исходный Excel файл", filetypes=[("Excel files", "*.xlsx;*.xls")])
     
-    if not input_file_path:
-        print("Файл не выбран.")
-        return
+    # Интерфейс для загрузки файла
+    uploaded_file = st.file_uploader("Загрузите Excel файл", type="xlsx")
     
-    # Создание копии выбранного файла
-    output_file_path = filedialog.asksaveasfilename(defaultextension=".xlsx", title="Сохраните обработанный файл", filetypes=[("Excel files", "*.xlsx;*.xls")])
-    if not output_file_path:
-        print("Местоположение для сохранения файла не выбрано.")
-        return
-    
-    shutil.copy(input_file_path, output_file_path)
+    if uploaded_file:
+        df = pd.read_excel(uploaded_file)
+        st.write(df.head())
+        
+        shutil.copy(input_file_path, output_file_path)
     
     # Чтение данных из Excel файла
     try:
